@@ -603,38 +603,6 @@ int fmpass(vector<Node>* Nodes, vector<Net>* Nets) {
     
 }
 
-// Function to parse command-line arguments
-void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
-    if (argc < 3) {
-        cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
-        // cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
-        exit(EXIT_FAILURE);
-    }
-
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-log") == 0) {
-            if (i + 1 < argc) {
-                logLevel = atoi(argv[i + 1]);
-                i++;
-            } else {
-                cerr << "Error: -log option requires an argument." << endl;
-                exit(EXIT_FAILURE);
-            }
-        } else if (strcmp(argv[i], "-input") == 0) {
-            if (i + 1 < argc) {
-                benchmark = argv[i + 1];
-                i++;
-            } else {
-                cerr << "Error: -input option requires an argument." << endl;
-                exit(EXIT_FAILURE);
-            }
-        } else {
-            cerr << "Unknown option: " << argv[i] << endl;
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
 int FM(vector<Node>* Nodes, vector<Net>* Nets) {
     int cut = INT_MAX;
     int lastCut = INT_MAX;

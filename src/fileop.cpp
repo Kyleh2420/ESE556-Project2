@@ -12,8 +12,41 @@
 #include "Net.h"
 #include "LinkedList.h"
 #include "fiducciaMattheyses.cpp"
+#include "breuers.cpp"
 
 using namespace std;
+
+// Function to parse command-line arguments
+void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
+    if (argc < 3) {
+        cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
+        // cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-log") == 0) {
+            if (i + 1 < argc) {
+                logLevel = atoi(argv[i + 1]);
+                i++;
+            } else {
+                cerr << "Error: -log option requires an argument." << endl;
+                exit(EXIT_FAILURE);
+            }
+        } else if (strcmp(argv[i], "-input") == 0) {
+            if (i + 1 < argc) {
+                benchmark = argv[i + 1];
+                i++;
+            } else {
+                cerr << "Error: -input option requires an argument." << endl;
+                exit(EXIT_FAILURE);
+            }
+        } else {
+            cerr << "Unknown option: " << argv[i] << endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+}
 
 vector<Node> parseNodes(string filename) {
     ifstream NodeFile(filename);
@@ -82,7 +115,7 @@ vector<Net> parseNets(string filename, vector<Node>* nodes) {
         numNets = stoi(line.substr(line.find_first_of(digits)));
     }
 
-    getline(NetFile,line); //gets NumPins line (not needed)
+    getline(NetFile,line); //gets N(line.substr(liumPins line (not needed)
 
     while (Nets.size()<numNets||!NetFile.eof()) {
         getline(NetFile,line);
@@ -127,15 +160,55 @@ void parseSCL(string filename) {
         exit(EXIT_FAILURE);
     }
 
+    char const* digits = "0123456789";
     string line;
-    while (getline(SCLFile,line)) {
+    bool flag = 0;
+
+    getline(SCLFile,line); //gets first line
+
+    while (numRows == -1) {
+        getline(SCLFile,line);
+        if (line.empty() || line[0] == '#') continue;
+        numRows = stoi(line.substr(line.find_first_of(digits)));
+    }
+
+    while (numSites == -1) {
+        getline(SCLFile,line);
+        if (line.empty() || line[0] == '#') continue;
+        if (line.find("NumSites") != string::npos) {
+            line = line.substr(line.find_first_of("NumSites"));
+            numSites = stoi(line.substr(line.find_first_of(digits)));
+        }
+    }
+    
+    SCLFile.close();
+}
+
+void parsePL(string filename, vector<Node>* nodes) {
+    ifstream PLFile(filename);
+    if(!PLFile.is_open()) {
+        cerr << filename << " not found" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    char const* digits = "0123456789";
+    string line;
+
+    getline(PLFile,line); //gets first line
+
+    while (getline(PLFile,line)) {
         if (line.empty() || line[0] == '#') continue;
         stringstream iss(line);
-        
-    
-        
+        string nodeName;
+        int xcoord, ycoord;
+        iss >> nodeName >> xcoord >> ycoord;
+        int nodeIndex = stoi(nodeName.substr(1));
+        if (nodeName.find("p") != string::npos)
+            nodeIndex += offset;
+        (*nodes)[nodeIndex].setCoordinates(xcoord, ycoord);
     }
-    SCLFile.close();
+
+    PLFile.close();
 }
 
 void writeOutput(string filename, int cutsize, vector<Node> Nodes) {
