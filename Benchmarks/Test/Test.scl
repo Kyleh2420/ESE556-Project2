@@ -1,6 +1,6 @@
 SBU ESE 566 WKK scl 1.0
 
-NumRows : 4
+NumRows : 5
 
 CoreRow Horizontal
 	Coordinate		:18
@@ -9,7 +9,7 @@ CoreRow Horizontal
 	SiteSpacing		:1
 	SiteOrient		:N
 	SiteSymmetry	:Y
-	SubRowOrigin	:18	 NumSites	:9
+	SubRowOrigin	:18	 NumSites	:8
 End
 CoreRow Horizontal
 	Coordinate		:27
@@ -18,7 +18,7 @@ CoreRow Horizontal
 	SiteSpacing		:1
 	SiteOrient		:N
 	SiteSymmetry	:Y
-	SubRowOrigin	:18	 NumSites	:9
+	SubRowOrigin	:18	 NumSites	:8
 End
 CoreRow Horizontal
 	Coordinate		:36
@@ -27,7 +27,7 @@ CoreRow Horizontal
 	SiteSpacing		:1
 	SiteOrient		:N
 	SiteSymmetry	:Y
-	SubRowOrigin	:18	 NumSites	:9
+	SubRowOrigin	:18	 NumSites	:8
 End
 CoreRow Horizontal
 	Coordinate		:45
@@ -36,5 +36,14 @@ CoreRow Horizontal
 	SiteSpacing		:1
 	SiteOrient		:N
 	SiteSymmetry	:Y
-	SubRowOrigin	:18	 NumSites	:9
+	SubRowOrigin	:18	 NumSites	:8
+End
+CoreRow Horizontal
+	Coordinate		:54
+	Height			:9
+	SiteWidth		:1
+	SiteSpacing		:1
+	SiteOrient		:N
+	SiteSymmetry	:Y
+	SubRowOrigin	:18	 NumSites	:8
 End
