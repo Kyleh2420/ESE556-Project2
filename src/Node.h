@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <tuple>
 using namespace std;
 
 class Node
@@ -13,11 +14,13 @@ private:
     int height_;
     int area; // area of the cell.  
     bool terminal_;
-    bool partition;     //This is going to be left or right (0 or left, 1 for right)
-    bool locked;        //0 for unlocked, 1 for locked
-    int crossings;      //This is used to determine the gain sizes
     vector<int> connectedNets; // a vector of index of nets connected to this given node as they are all sequentially given in the .nets file.
+    int xcoord; //  lower left x coordinate of the node
+    int ycoord; //  lower left y coordinate of the node
     
+    bool locked;        //0 for unlocked, 1 for locked
+    bool partition;     //This is going to be left or right (0 or left, 1 for right)
+    int crossings;      //This is used to determine the gain sizes
 
 public:
 
@@ -56,6 +59,12 @@ public:
     void lockNode() {locked = 1;}
     void unlockNode() {locked = 0;}
     bool getLockStatus() {return locked;}
+
+    //Used to get the lower left coordinates of the node
+    tuple<int, int> getCoordinates() {return make_tuple(xcoord, ycoord);}
+    void setCoordinates(int x, int y) {xcoord = x; ycoord = y;}
 };
+
+
 
 #endif //Node_H

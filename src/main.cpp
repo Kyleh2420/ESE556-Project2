@@ -17,9 +17,6 @@
 
 using namespace std;
 
-int numRows = -1;
-int numSites = -1;
-
 int main(int argc, char *argv[]) {
 
     /*
@@ -45,11 +42,24 @@ int main(int argc, char *argv[]) {
         cout << "Number of nodes: " << Nodes.size() << endl;
     }
 
+    //Parse the nets
     vector<Net> Nets;
     Nets = parseNets(ifilepath+".nets", &Nodes);
     if (logLevel > 0) {
         cout << "Number of nets: " << Nets.size() << endl;
     }
+
+    //Parse the SCL file
+    parseSCL(ifilepath+".scl");
+    if (logLevel > 0) {
+        cout << "Number of rows: " << numRows << endl;
+        cout << "Number of sites: " << numSites << endl;
+    }
+
+    //Parse the PL file
+    parsePL(ifilepath+".pl", &Nodes);
+    
+    
 
     // if (logLevel > 1) {
     //     cout << "Node 45 ID: " << Nodes[45].getID() << endl;
