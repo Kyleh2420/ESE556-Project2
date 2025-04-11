@@ -1,124 +1,54 @@
 SBU ESE 566 WKK nets 1.0
-NumNets : 15
-NumPins : 4
-NetDegree	:		9	n0
-	p3
+NumNets : 4
+NumPins : 2
+NetDegree	:		14	n0
+	o3
+	o12
+	o1
+	o7
+	p1
+	o0
+	o5
+	o9
 	o2
-	o0
-	o3
-	p1
-	o5
-	p2
-	p0
-	o1
-NetDegree	:		4	n1
-	p3
-	o3
-	o1
+	o8
+	o11
 	o4
-NetDegree	:		9	n2
-	p2
-	o4
-	o5
-	o0
-	o3
-	p0
-	o1
+	o6
+	o10
+NetDegree	:		15	n1
 	o2
-	p1
-NetDegree	:		8	n3
-	o5
-	p0
-	p3
-	o3
-	p1
-	o4
-	o2
-	o0
-NetDegree	:		9	n4
-	p2
-	p0
-	o4
-	o3
+	o12
+	o7
 	o1
-	p3
-	o2
+	o11
 	o0
-	o5
-NetDegree	:		2	n5
 	o4
-	p2
-NetDegree	:		9	n6
+	o10
+	o6
+	o9
+	p1
+	p0
+	o3
+	o8
+	o5
+NetDegree	:		11	n2
 	o1
-	p1
-	o2
+	o10
+	o7
 	p0
+	o8
+	o6
+	o9
+	o4
+	o3
+	o12
+	p1
+NetDegree	:		7	n3
+	o4
+	o5
+	p1
+	o9
+	o12
+	o7
 	o0
-	o5
-	p3
-	o4
-	o3
-NetDegree	:		8	n7
-	o5
-	p0
-	o3
-	p3
-	o4
-	p2
-	o1
-	o2
-NetDegree	:		10	n8
-	o3
-	p3
-	o0
-	p2
-	o5
-	p0
-	o1
-	o4
-	p1
-	o2
-NetDegree	:		3	n9
-	p1
-	p2
-	o5
-NetDegree	:		9	n10
-	o4
-	o1
-	p2
-	o5
-	p3
-	p1
-	o3
-	p0
-	o0
-NetDegree	:		6	n11
-	p2
-	p3
-	p1
-	p0
-	o4
-	o3
-NetDegree	:		2	n12
-	o3
-	o0
-NetDegree	:		10	n13
-	o2
-	o5
-	o4
-	o0
-	p3
-	p0
-	p1
-	p2
-	o1
-	o3
-NetDegree	:		8	n14
-	p2
-	o0
-	o2
-	o1
-	o5
-	p0
-	o4
-	p1

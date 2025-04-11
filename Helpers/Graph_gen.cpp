@@ -43,6 +43,7 @@ void generateNets (int nodes, int nets, int pins, int npt, string filename){
     int random; 
     int degree; // degree of the net. 
     int nodeForNet; // this is for us to get a node. 
+    int inout;  // to determine if a net is an input to a node or an output to the node. 
     if(!netFile.is_open()){
         cout<< "Can't open the nets file" << endl; 
         exit(1); 
@@ -59,6 +60,7 @@ void generateNets (int nodes, int nets, int pins, int npt, string filename){
             netFile << "NetDegree\t:\t" << "\t" << degree << "\t" << "n" << i << endl; 
             for (int j =0 ; j<degree; j++){
                 random = rand() % nodes;// cuz we can choose from a selection of 0 to nodes-1 nodes.  
+                inout = rand()%2; // it can either be an input or an output. if 0 then input if 1 then output.
                 bool exists = false; 
                 if (store_nodes.size()!= 0){
                     for(int k = 0; k < store_nodes.size(); k++){
@@ -89,12 +91,18 @@ void generateNets (int nodes, int nets, int pins, int npt, string filename){
     netFile.close();
 }
 
+void generateSCL(int rows, int sites, string filename){
+
+}
+
 
 int main (){
     string benchmark = "Test";
     string filePath = "../Benchmarks/" + benchmark + "/" + benchmark; 
     int numNodes; 
     int numNets; // user intputs for num nodes and num nets. 
+    int numRows; 
+    int numSites; 
 
      
      
@@ -103,10 +111,17 @@ int main (){
     cin >> numNodes; 
     cout << "Enter the number of nets in the graph" << endl;
     cin  >> numNets; 
+    cout << "Enter the total number of rows" << endl; 
+    cin >> numRows; 
+    cout  <<"Enter number of sites per row"<< endl;
+    cin >> numSites; 
     int Pins = (rand() % ((int)(numNodes/3) + 1)) + 1; // at most a third of the nodes can be pins. 
     int npt = (rand()% (int)((numNodes-Pins)/5)) + 1;// the number of o nodes that are terminals. 
+
+    if ((numRows*numSites) < numNodes)
     //cout <<"pins" << Pins << endl; 
     //cout <<"npt" << npt << endl; 
     generateNodes(numNodes, filePath+".nodes", Pins, npt); 
     generateNets(numNodes, numNets, Pins, npt, filePath+".nets"); 
+    generateSCL (numRows, numSites, filePath+".scl"); 
 }
