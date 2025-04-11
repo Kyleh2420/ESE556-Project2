@@ -13,9 +13,12 @@
 #include "LinkedList.h"
 #include "breuers.cpp"
 #include "fiducciaMattheyses.cpp"
+#include "fileop.cpp"
 
 using namespace std;
 
+int numRows = -1;
+int numSites = -1;
 
 int main(int argc, char *argv[]) {
 
