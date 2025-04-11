@@ -2,7 +2,12 @@
 #include <fstream> // writing the nodes and the nets to a file. 
 #include <cstdlib>
 #include <vector>
+#include <iomanip>
 using namespace std; 
+
+int randomInt(){ // all coordinates would lie between 0 to +100
+    return (rand()%101); // randomly generating the values of the coordinates. two points might end up getting the same coodinates in this case.  
+}
 
 
 void generateNodes(int nodes, string filename, int numPins, int npt){
@@ -92,8 +97,76 @@ void generateNets (int nodes, int nets, int pins, int npt, string filename){
 }
 
 void generateSCL(int rows, int sites, string filename){
+    std:: ofstream SCLFile(filename); 
 
+    int coordinate = 18; 
+    int height = 9; 
+    int sitewidth = 1;
+    int sitespacing = 1; 
+    char siteorient = 'N';  
+    char sitesymmetry = 'Y'; 
+    int subroworigin = 18; 
+
+    
+    if(!SCLFile.is_open()){
+        cout << "Can't open the .scl file"<< endl; 
+        exit(1); 
+    }
+    else{
+        SCLFile << "SBU ESE 566 WKK scl 1.0" << endl;
+        SCLFile << endl;  
+        SCLFile << "NumRows : " << rows << endl; 
+        SCLFile << endl; 
+        for(int i= 0; i < rows; i++) {
+            SCLFile << "CoreRow Horizontal"<< endl; 
+            SCLFile << "\tCoordinate\t\t:" << coordinate << endl; 
+            SCLFile << "\tHeight\t\t\t:"<< height << endl; 
+            SCLFile << "\tSiteWidth\t\t:" << sitewidth << endl;
+            SCLFile << "\tSiteSpacing\t\t:" << sitespacing << endl; 
+            SCLFile << "\tSiteOrient\t\t:" <<  siteorient << endl; 
+            SCLFile << "\tSiteSymmetry\t:" << sitesymmetry << endl; 
+            SCLFile << "\tSubRowOrigin\t:" << subroworigin << "\t NumSites\t:" << sites<< endl;
+            SCLFile << "End" << endl;  
+
+            coordinate += 9; 
+        }
+    }
+
+    SCLFile.close(); 
 }
+
+
+void generatePL(int nodes, string filename, int numPins, int npt){
+    //int numPins; // number of p nodes 
+    int terminals; // numer of terminals.
+    //int npt ; //  non pin terminals. 
+
+    terminals = numPins +npt; 
+    std :: ofstream PLFile(filename); // open the file 
+    if (!PLFile.is_open()) {
+        cout << "Can't open file" << endl; 
+        exit(1); 
+    }
+    else {
+        PLFile << "SBU ESE 566 WKK PL 1.0" << endl; 
+        PLFile <<endl; 
+
+        for(int i = 0; i < nodes-(numPins+npt); i++){ // nodes - numPins are 0 nodes. 
+            //cout <<i<<endl; 
+            PLFile <<"o"<<i<<"\t"<< 0 <<"\t" << 0 << "\t:N" << endl; // o pins, the pins that can either be movable or non movable and start with o  
+        }
+        for (int i =nodes-(numPins+npt); i < nodes- numPins ; i++){
+            PLFile <<"o"<<i<<"\t"<< rand()%101 + 1 <<"\t" << rand()%101 + 1<< "\t:N"<< "\t/FIXED"<< endl;
+        }
+
+        for (int i=0; i < numPins; i++){
+            PLFile <<"p"<<i<<"\t"<< rand()%101 + 1 <<"\t" << rand()%101 +1 << "\t:N" << "\t/FIXED_NI" << endl; // p pins. 
+        }
+    }
+
+    PLFile.close();
+}
+
 
 
 int main (){
@@ -118,10 +191,14 @@ int main (){
     int Pins = (rand() % ((int)(numNodes/3) + 1)) + 1; // at most a third of the nodes can be pins. 
     int npt = (rand()% (int)((numNodes-Pins)/5)) + 1;// the number of o nodes that are terminals. 
 
-    if ((numRows*numSites) < numNodes)
+    if ((numRows*numSites) < numNodes){
+        cout << "Not enough sites to place all the nodes."<<endl;
+        exit(1); 
+    }
     //cout <<"pins" << Pins << endl; 
     //cout <<"npt" << npt << endl; 
     generateNodes(numNodes, filePath+".nodes", Pins, npt); 
     generateNets(numNodes, numNets, Pins, npt, filePath+".nets"); 
     generateSCL (numRows, numSites, filePath+".scl"); 
+    generatePL(numNodes, filePath+".pl", Pins, npt); 
 }

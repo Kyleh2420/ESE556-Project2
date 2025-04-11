@@ -1,5 +1,5 @@
 SBU ESE 566 WKK nodes 1.0
-NumNodes : 15
+NumNodes : 16
 NumTerminals : 3
 o0	7	3
 o1	2	5
@@ -13,6 +13,7 @@ o8	3	1
 o9	11	9
 o10	6	1
 o11	5	7
-o12	1	11	terminal
-p0	4	11	terminal_NI
-p1	11	8	terminal_NI
+o12	1	11
+o13	4	11	terminal
+p0	11	8	terminal_NI
+p1	11	4	terminal_NI
