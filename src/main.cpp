@@ -86,11 +86,7 @@ int main(int argc, char *argv[]) {
     //Create the inital cut
     //Randomly assign all nodes a status of either left or right
     srand(time(0));
-    for (int i = 0; i < numNodes; i++) {
-        if (Nodes[i].isTerminal() == true)
-            break;
-        Nodes[i].setPartition(rand() % 2);
-    }
+    
     //Execute FM
     int lastCut = FM(&Nodes, &Nets);
     

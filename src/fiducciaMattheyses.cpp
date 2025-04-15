@@ -600,6 +600,12 @@ int FM(vector<Node>* Nodes, vector<Net>* Nets) {
     int cut = INT_MAX;
     int lastCut = INT_MAX;
 
+    for (int i = 0; i < numNodes; i++) {
+        if (Nodes[i].isTerminal() == true)
+            break;
+        Nodes[i].setPartition(rand() % 2);
+    } // sets initial partition. 
+
     do{
         lastCut = cut;
         cut = fmpass(Nodes, Nets);
