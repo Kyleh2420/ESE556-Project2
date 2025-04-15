@@ -11,10 +11,18 @@
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
-#include "fiducciaMattheyses.cpp"
-#include "breuers.cpp"
+#include "shared_variables.h"
 
 using namespace std;
+
+// Global variables
+int numNodes = -1;
+int numTerm = -1;
+int numNets = -1;
+int offset = 0;
+int logLevelGlobal = 0;
+int numRows = -1;
+int numSites = -1;
 
 // Function to parse command-line arguments
 void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
@@ -176,7 +184,10 @@ void parseSCL(string filename) {
         getline(SCLFile,line);
         if (line.empty() || line[0] == '#') continue;
         if (line.find("NumSites") != string::npos) {
-            line = line.substr(line.find_first_of("NumSites"));
+            // cout << "NumSites found" << endl;
+            // cout << line << endl;
+            // cout << line.substr(line.find("NumSites"))<< endl;
+            line = line.substr(line.find("NumSites"));
             numSites = stoi(line.substr(line.find_first_of(digits)));
         }
     }

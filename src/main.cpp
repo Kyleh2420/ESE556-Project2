@@ -7,6 +7,7 @@
 #include <map>
 #include <limits.h>
 #include <cstring>
+#include <tuple>
 
 #include "Node.h"
 #include "Net.h"
@@ -14,6 +15,7 @@
 #include "breuers.cpp"
 #include "fiducciaMattheyses.cpp"
 #include "fileop.cpp"
+#include "shared_variables.h"
 
 using namespace std;
 
@@ -58,6 +60,8 @@ int main(int argc, char *argv[]) {
 
     //Parse the PL file
     parsePL(ifilepath+".pl", &Nodes);
+    if (logLevel > 0)
+        cout << "xcoord: " << get<0>(Nodes[offset].getCoordinates()) << " ycoord: " << get<1>(Nodes[offset].getCoordinates()) << endl;
     
     
 
@@ -83,6 +87,8 @@ int main(int argc, char *argv[]) {
     //Randomly assign all nodes a status of either left or right
     srand(time(0));
     for (int i = 0; i < numNodes; i++) {
+        if (Nodes[i].isTerminal() == true)
+            break;
         Nodes[i].setPartition(rand() % 2);
     }
     //Execute FM

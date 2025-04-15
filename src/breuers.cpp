@@ -1,3 +1,5 @@
+#include "shared_variables.h"
+
 void bisection() {
 
 }

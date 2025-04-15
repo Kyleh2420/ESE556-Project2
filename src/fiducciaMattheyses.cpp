@@ -11,22 +11,15 @@
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
+#include "shared_variables.h"
 
 using namespace std;
-
-int numNodes = -1;
-int numTerm = -1;
-int numNets = -1;
-int offset;
-int logLevelGlobal;
 
 struct timePoint { 
     int lockedNode; 
     int cutSize; 
     float ratio;
 };
-
-
 
 float getAreaRatio(vector<Node> Nodes){
     int leftArea, rightArea; 

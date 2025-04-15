@@ -1,14 +1,20 @@
-Cutsize: 11
-Partition Ratio: 1.57516
-Partition 1: 5	Area: 241 - 61.1675%
-o0
-o3
-p1
-p2
-p3
-Partition 2: 5	Area: 153 - 38.8325%
+Cutsize: 1
+Partition Ratio: 0.747191
+Partition 1: 9	Area: 266 - 42.7653%
 o1
 o2
-o4
 o5
+o8
+o11
+o12
+o13
 p0
+p1
+Partition 2: 7	Area: 356 - 57.2347%
+o0
+o3
+o4
+o6
+o7
+o9
+o10
