@@ -11,7 +11,7 @@ void bisection() {
 }
 
 void quadrature(vector<Node>* Nodes, vector<Net>* Nets){
-    int lastCut = FM(&Nodes, &Nets);
+    int lastCut = FM(&Nodes, &Nets); // this will also be returning the area split so I can use that do determine the x and y bounds
     vector<Node> leftNodes; 
     vector<Node> rightNodes; 
     vector<Net> leftNets; 
