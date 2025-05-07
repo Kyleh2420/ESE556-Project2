@@ -4,7 +4,7 @@
 #include "Node.h"
 #include "Net.h"
 #include "TreeNode.h"
-#include "fiducciaMattheyses.cpp"
+#include "fm.cpp"
 
 
 void bisection() {
@@ -21,7 +21,7 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     // the new values for left and right children depending on the cutdirection of the current node. 
     // Also need to do the height and width thing but I think once we know the bounds for x and y then it should just be yhigh - y low and xhigh - xlow.
 
-    int lastCut = FM(Nodes, Nets); 
+    int lastCut = FM(*Nodes, *Nets, numNodes); 
     vector<Node> leftNodes; 
     vector<Node> rightNodes; 
     

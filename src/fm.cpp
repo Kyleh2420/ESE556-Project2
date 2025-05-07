@@ -485,6 +485,20 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
     return current_cutsize; 
 }
 
+int FM(vector<Node>& all_nodes, vector<Net>& all_nets,
+        int global_num_nodes,float balance_factor_lower_bound = 0.5f, float balance_factor_upper_bound = 0.5f) {
+
+
+    int lastcut;
+    int cut = std::numeric_limits<int>::max();
+    do{
+        lastcut = cut;
+        cut = fmpass(all_nodes, all_nets, balance_factor_lower_bound, balance_factor_upper_bound, global_num_nodes);
+    }while(lastcut>cut);
+
+    return lastcut;
+}
+
 // Example main or calling function structure (illustrative)
 /*
 int main() {

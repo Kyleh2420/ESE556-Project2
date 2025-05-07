@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     
     //Execute FM
     // int lastCut = FM(&Nodes, &Nets);
-    int final_cutsize = fmpass(Nodes, Nets, balance_low, balance_high, numNodes);
+    int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
     
 
     writeOutput(ofilepath,final_cutsize,Nodes);
