@@ -12,8 +12,9 @@
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
-#include "breuers.cpp"
-#include "fiducciaMattheyses.cpp"
+// #include "breuers.cpp"
+// #include "fiducciaMattheyses.cpp"
+#include "fm.cpp"
 #include "fileop.cpp"
 #include "shared_variables.h"
 
@@ -59,9 +60,9 @@ int main(int argc, char *argv[]) {
     }
 
     //Parse the PL file
-    parsePL(ifilepath+".pl", &Nodes);
-    if (logLevel > 0)
-        cout << "xcoord: " << get<0>(Nodes[offset].getCoordinates()) << " ycoord: " << get<1>(Nodes[offset].getCoordinates()) << endl;
+    // parsePL(ifilepath+".pl", &Nodes);
+    // if (logLevel > 0)
+    //     cout << "xcoord: " << get<0>(Nodes[offset].getCoordinates()) << " ycoord: " << get<1>(Nodes[offset].getCoordinates()) << endl;
     
     
 
@@ -86,12 +87,25 @@ int main(int argc, char *argv[]) {
     //Create the inital cut
     //Randomly assign all nodes a status of either left or right
     srand(time(0));
+
+    //Randomly assign partitions
+    for (int i = 0; i < Nodes.size(); i++) {
+        int random = rand() % 2;
+        Nodes[i].setPartition(random);
+    }
+
+    int numNodes = Nodes.size(); // Set this appropriately
+
+
+    float balance_low = 0.5f; 
+    float balance_high = 0.5f; 
     
     //Execute FM
-    int lastCut = FM(&Nodes, &Nets);
+    // int lastCut = FM(&Nodes, &Nets);
+    int final_cutsize = fmpass(Nodes, Nets, balance_low, balance_high, numNodes);
     
 
-    writeOutput(ofilepath,lastCut,Nodes);
+    writeOutput(ofilepath,final_cutsize,Nodes);
     return 0;   
 }
 

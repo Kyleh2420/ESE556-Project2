@@ -14,6 +14,7 @@ private:
     int height_;
     int area; // area of the cell.  
     bool terminal_;
+    int gain;
     vector<int> connectedNets; // a vector of index of nets connected to this given node as they are all sequentially given in the .nets file.
     int xcoord; //  lower left x coordinate of the node
     int ycoord; //  lower left y coordinate of the node
@@ -55,10 +56,13 @@ public:
     int getCrossings() {return crossings;}
     void setCrossings(int i) {crossings = i;}
 
+    int getGain() const { return gain; }
+    void setGain(int g) { gain = g; }
+
     //Lock and unlock
     void lockNode() {locked = 1;}
     void unlockNode() {locked = 0;}
-    bool getLockStatus() {return locked;}
+    bool isLocked() {return locked;}
 
     //Used to get the lower left coordinates of the node
     tuple<int, int> getCoordinates() {return make_tuple(xcoord, ycoord);}

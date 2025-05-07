@@ -22,7 +22,7 @@ struct timePoint {
 };
 
 float getAreaRatio(vector<Node> Nodes){
-    int leftArea, rightArea; 
+    int leftArea = 0, rightArea = 0; 
     for (int i = 0; i < numNodes; i++) {
         if (Nodes[i].whichPartition() == 0) {
             //leftNodes.push_back(Nodes[i].getID());
@@ -36,44 +36,85 @@ float getAreaRatio(vector<Node> Nodes){
     return ratio; 
 }
 
-int calculateCrossings(vector<Node>* Nodes, vector<Net>* Nets) {
-    int cutsize = 0;
-    bool flag = false;  // Used to see if we should break loop and increment the crossings for the nets
+// New Versino of calculateCrossings
+// New: linear‐time initialization of cutsize and node‐crossings
+int initializeCutAndCrossings(
+    vector<Node>* Nodes,
+    vector<Net>*  Nets,
+    vector<int>&  sideCountL,
+    vector<int>&  sideCountR
+) {
+    size_t M = Nets->size();
+    size_t V = Nodes->size();
 
-    //This is going to be O(n^3) because I'm spending too much brainpower trying to figure out how to minimize it
-    //Our goal is to find the number of net crossings that occur for each node
-    //We already know the total number of nets for each node
-    //Noncrossings = totalNets - crossings
-    //Gain = crossings - noncrossings
-    //Therefore: gain = 2*crossings - totalNets
-    
-    //We will spend O(n^3)
-    //Loop through all nets
-        //Loop through each node on the net
-            //Compare this to every other node (besides itself) and count the number of crossings
-        //Store that number into node.crossings
-    for (size_t i = 0; i < Nets->size(); i++) {
-        for (size_t j = 0; j < (*Nets)[i].getConnectedNodes().size(); j++) {
-            int crossings = 0;
-            int nodejIdx = (*Nets)[i].getConnectedNodes()[j];
-            for (size_t k = 0; k < (*Nets)[i].getConnectedNodes().size(); k++) {
-                int nodekIdx = (*Nets)[i].getConnectedNodes()[k];
-                if (j == k) break;
-                if ((*Nodes)[nodejIdx].whichPartition() ^ (*Nodes)[nodekIdx].whichPartition()) {
-                    //In here, there is a crossing.
-                    crossings++;
-                    flag = true;
-                }
-            }
-            (*Nodes)[nodejIdx].setCrossings(crossings);
-        }
-        //We consider cutsize on a per net basis, so it goes here
-        if (flag) {
-            cutsize++;
+    // 1) zero out per‐net counts
+    sideCountL.assign(M, 0);
+    sideCountR.assign(M, 0);
+
+    // 2) tally each pin into L or R
+    for (size_t ni = 0; ni < M; ni++) {
+        for (int v : (*Nets)[ni].getConnectedNodes()) {
+            if ((*Nodes)[v].whichPartition() == 0) sideCountL[ni]++;
+            else                                   sideCountR[ni]++;
         }
     }
+
+    // 3) zero all node‐crossings
+    for (size_t v = 0; v < V; v++)
+        (*Nodes)[v].setCrossings(0);
+
+    // 4) build cut‐size and bump node crossings
+    int cutsize = 0;
+    for (size_t ni = 0; ni < M; ni++) {
+        if (sideCountL[ni] > 0 && sideCountR[ni] > 0) {
+            cutsize++;
+            for (int v : (*Nets)[ni].getConnectedNodes())
+                (*Nodes)[v].incCrossings();  // assumes you have an incCrossings()
+        }
+    }
+
     return cutsize;
 }
+
+
+// int calculateCrossings(vector<Node>* Nodes, vector<Net>* Nets) {
+//     int cutsize = 0;
+//     bool flag = false;  // Used to see if we should break loop and increment the crossings for the nets
+
+//     //This is going to be O(n^3) because I'm spending too much brainpower trying to figure out how to minimize it
+//     //Our goal is to find the number of net crossings that occur for each node
+//     //We already know the total number of nets for each node
+//     //Noncrossings = totalNets - crossings
+//     //Gain = crossings - noncrossings
+//     //Therefore: gain = 2*crossings - totalNets
+    
+//     //We will spend O(n^3)
+//     //Loop through all nets
+//         //Loop through each node on the net
+//             //Compare this to every other node (besides itself) and count the number of crossings
+//         //Store that number into node.crossings
+//     for (size_t i = 0; i < Nets->size(); i++) {
+//         for (size_t j = 0; j < (*Nets)[i].getConnectedNodes().size(); j++) {
+//             int crossings = 0;
+//             int nodejIdx = (*Nets)[i].getConnectedNodes()[j];
+//             for (size_t k = 0; k < (*Nets)[i].getConnectedNodes().size(); k++) {
+//                 int nodekIdx = (*Nets)[i].getConnectedNodes()[k];
+//                 if (j == k) break;
+//                 if ((*Nodes)[nodejIdx].whichPartition() ^ (*Nodes)[nodekIdx].whichPartition()) {
+//                     //In here, there is a crossing.
+//                     crossings++;
+//                     flag = true;
+//                 }
+//             }
+//             (*Nodes)[nodejIdx].setCrossings(crossings);
+//         }
+//         //We consider cutsize on a per net basis, so it goes here
+//         if (flag) {
+//             cutsize++;
+//         }
+//     }
+//     return cutsize;
+// }
 
 void storeInBuckets(map<int, linkedlist*>* leftBucket, map<int, linkedlist*>* rightBucket, vector<Node>* Nodes, int* lSize, int* rSize) {
     *lSize = 0;
@@ -87,7 +128,7 @@ void storeInBuckets(map<int, linkedlist*>* leftBucket, map<int, linkedlist*>* ri
         }
         
         
-        if ((*Nodes)[i].whichPartition() == 1) {
+        if ((*Nodes)[i].whichPartition() == 0) {
             //If the partition is the left
             currentBucket = leftBucket;
             (*lSize)++;
@@ -259,9 +300,11 @@ void printBuckets(map<int, linkedlist*> leftBucket, map<int, linkedlist*> rightB
 
 int fmpass(vector<Node>* Nodes, vector<Net>* Nets) {
     // For all terminal nodes, ensure that they will no longer move.
+    vector<int> sideCountL, sideCountR;
 
     // Determine the gains, store the current gains in the Nodes structure.
-    int cutsize = calculateCrossings(Nodes, Nets);
+    int cutsize = initializeCutAndCrossings(&Nodes, &Nets, sideCountL, sideCountR);
+
 
     // Creates the timeline necessary for FM to climb hills and work
     // The index will be the iteration number, while the timePoint struct holds the relevant information for that particular iteration
@@ -601,9 +644,9 @@ int FM(vector<Node>* Nodes, vector<Net>* Nets) {
     int lastCut = INT_MAX;
 
     for (int i = 0; i < numNodes; i++) {
-        if (Nodes[i].isTerminal() == true)
+        if ((*Nodes)[i].isTerminal() == true)
             break;
-        Nodes[i].setPartition(rand() % 2);
+        (*Nodes)[i].setPartition(rand() % 2);
     } // sets initial partition. 
 
     do{
