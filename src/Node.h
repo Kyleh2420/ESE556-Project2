@@ -67,6 +67,8 @@ public:
     //Used to get the lower left coordinates of the node
     tuple<int, int> getCoordinates() {return make_tuple(xcoord, ycoord);}
     void setCoordinates(int x, int y) {xcoord = x; ycoord = y;}
+    int getX() {return xcoord;}
+    int getY() {return ycoord;}
 };
 
 

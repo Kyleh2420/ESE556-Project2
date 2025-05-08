@@ -18,6 +18,7 @@
 #include "fm.cpp"
 #include "fileop.cpp"
 #include "TreeNode.h"
+#include "HPWL.cpp"
 
 using namespace std;
 
@@ -118,6 +119,13 @@ int main(int argc, char *argv[]) {
 
     clearOutputFile(ofilepath);
     writeOutputPreOrder(ofilepath,rootNode);
+
+    parseCoordinates(ofilepath,Nodes);
+    ofstream out;
+    out.open(ofilepath,std::ios::app);
+    out << "Total Wirelength: "<<totalWirelength(Nodes, Nets) << endl;
+
+    out.close();
 
     return 0;   
 }

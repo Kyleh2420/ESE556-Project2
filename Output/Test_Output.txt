@@ -6,7 +6,7 @@ Node ID: o2		Coords: (1, 0)
 Node ID: o3		Coords: (1, 1)
 Node ID: o4		Coords: (0, 2)
 Node ID: o5		Coords: (0, 3)
-Node ID: o6		Coords: (1, 1)
+Node ID: o6		Coords: (1, 3)
 Node ID: o7		Coords: (1, 2)
 =======
 =======
@@ -29,6 +29,7 @@ Node ID: o12		Coords: (2, 2)
 Node ID: o13		Coords: (2, 3)
 Node ID: p0		Coords: (3, 2)
 Node ID: p1		Coords: (3, 3)
+<<<<<<< Updated upstream
 =======
 =======
 Node ID: o8		Coords: (2, 0)
@@ -43,4 +44,7 @@ Node ID: p1		Coords: (4, 0)
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+Total Wirelength: 292
 >>>>>>> Stashed changes
