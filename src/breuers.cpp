@@ -42,11 +42,20 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 
     TreeNode* leftChild;
     TreeNode* rightChild;
-    for (int i = 0; i < (*Nodes).size(); i++) {
-        if((*Nodes)[i].whichPartition() == 1)
-            rightNodes.push_back((*Nodes)[i]);
-        else 
+
+    int localLeftArea = 0;
+    int localRightArea = 0;
+    int localTotalArea = 0;
+    for (int i = 0; i < (*Nodes).size(); i++){
+        if((*Nodes)[i].whichPartition() == 1){
+            rightNodes.push_back((*Nodes)[i]); 
+            localRightArea += (*Nodes)[i].getArea();
+        }
+        else {
             leftNodes.push_back((*Nodes)[i]);
+            localLeftArea += (*Nodes)[i].getArea();
+        }
+        localTotalArea += (*Nodes)[i].getArea();
     }
 
     yh = currentNode -> getYhigh(); 
@@ -56,14 +65,14 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 
     if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
         
-        xPartition = ((float)(leftArea/totalArea) *(xh - xl)) + xl; 
+        xPartition = round(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl);
 
         leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
     }
     else{
         // left is the same as down 
-        yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
+        yPartition = ceil(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl);
 
         leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  

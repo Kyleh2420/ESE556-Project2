@@ -1,5 +1,5 @@
 SBU ESE 566 WKK nets 1.0
-NumNets : 10
+NumNets : 4
 NumPins : 2
 NetDegree	:		15	n0
 	o7
@@ -51,69 +51,3 @@ NetDegree	:		6	n3
 	o1
 	o5
 	o11
-NetDegree	:		14	n4
-	o3
-	o4
-	p1
-	o0
-	p0
-	o2
-	o9
-	o8
-	o10
-	o5
-	o11
-	o7
-	o6
-	o13
-NetDegree	:		6	n5
-	p1
-	o13
-	o6
-	p0
-	o12
-	o10
-NetDegree	:		2	n6
-	o6
-	o3
-NetDegree	:		14	n7
-	o11
-	o7
-	o4
-	o0
-	o6
-	p0
-	o1
-	o9
-	o3
-	o12
-	o8
-	o10
-	o2
-	o5
-NetDegree	:		10	n8
-	o5
-	o2
-	o3
-	o10
-	o4
-	o8
-	o0
-	o9
-	p0
-	o1
-NetDegree	:		14	n9
-	o6
-	o0
-	o7
-	o5
-	o12
-	o2
-	o4
-	o10
-	o11
-	p1
-	o3
-	o8
-	o1
-	o13
