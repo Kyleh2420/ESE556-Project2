@@ -6,10 +6,10 @@
 #include "TreeNode.h"
 #include "fm.cpp"
 
-int maxWidth = 0;
-int leftArea = 0;
-int rightArea = 0;
-int totalArea = 0;
+// int maxWidth = 0;
+// int leftArea = 0;
+// int rightArea = 0;
+// int totalArea = 0;
 
 /* 
     naming convention for cut partitioning:
@@ -33,7 +33,7 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 
     int xh,xl,yh,yl;
     int xPartition, yPartition; // the x and y values that the cut goes through  
-    int lastCut = FM(*Nodes, *Nets, numNodes); // this is the cutsize.
+    
     vector<Node> leftNodes;
     vector<Node> rightNodes;
 

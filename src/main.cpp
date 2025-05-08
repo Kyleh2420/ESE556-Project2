@@ -104,8 +104,8 @@ int main(int argc, char *argv[]) {
     
     //Execute FM
     // int lastCut = FM(&Nodes, &Nets);
-    int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
-    writeOutput(ofilepath,final_cutsize,Nodes);
+    //int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
+    //writeOutput(ofilepath,final_cutsize,Nodes);
 
     TreeNode *currentNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
     if (input == "quadrature")
