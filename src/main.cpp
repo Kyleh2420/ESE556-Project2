@@ -109,11 +109,22 @@ int main(int argc, char *argv[]) {
     //int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
     //writeOutput(ofilepath,final_cutsize,Nodes);
 
-    TreeNode *currentNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
+    TreeNode *rootNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
     if (input == "quadrature")
-        quadrature(&Nodes, &Nets, currentNode); // Call quadrature with nullptr for the currentNode
+        quadrature(&Nodes, &Nets, rootNode); // Call quadrature with nullptr as the parent for the rootNode
     else if (input == "bisection")
-        bisection(&Nodes, &Nets, currentNode); // Call bisection with nullptr for the currentNode
+        bisection(&Nodes, &Nets, rootNode); // Call bisection with nullptr as the parent for the rootNode
+    else if (input == "slice")
+        slice(&Nodes, &Nets, rootNode); // Call slice with nullptr as the parent for the rootNode
+    else if (input == "cutOriented")
+        cout << "I aint doing this shitty fucking placement algo. Shit makes no sense. BUT I LOVE ALEX DOBOLI. HIS SON GOES TO STANFORD." << endl;
+    else {
+        cerr << "Invalid input. Please enter 'quadrature', 'bisection', or 'slice'." << endl;
+        return 1;
+    }
+
+    writeOutput(ofilepath,rootNode);
+
     return 0;   
 }
 

@@ -20,6 +20,8 @@
 void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     if(Nodes->size() == 1) { // Only one node remaining so we're at the leaf.
         currentNode->setNodeId((*Nodes)[0].getID());
+        currentNode->setLeftChild(nullptr);
+        currentNode->setRightChild(nullptr);
         return; // you can't partition anymore.
     }
     if(Nodes->size() == 0) { return; } // No nodes to partition.
@@ -79,7 +81,8 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){  // root node should be made and sent to this function. 
     if(Nodes->size()== 1){// Only one node remaining so we're at the leaf. 
         currentNode -> setNodeId((*Nodes)[0].getID()); 
-
+        currentNode->setLeftChild(nullptr);
+        currentNode->setRightChild(nullptr);
         return; // you can't partition anymore. 
     }
     if (Nodes -> size() == 0) {return;}
@@ -140,10 +143,10 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     quadrature(&rightNodes, Nets, rightChild); 
 }
 
-void sliceBisection() {
+void slice(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 
 }
 
-void cutOriented() {
+void cutOriented(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     
 }

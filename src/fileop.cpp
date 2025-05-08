@@ -242,44 +242,50 @@ void parsePL(string filename, vector<Node>* nodes) {
     PLFile.close();
 }
 
-void writeOutput(string filename, int cutsize, vector<Node> Nodes) {
+void writeOutput(string filename, TreeNode* root) {
     ofstream OutputFile(filename);
     if(!OutputFile.is_open()) {
         cerr << filename << " not found" << endl;
         exit(EXIT_FAILURE);
     }
-    // making a copy and not deleting this just yet. 
-    vector<string> leftNodes;
-    vector<string> rightNodes;
-
-    OutputFile << "Cutsize: " << cutsize << endl;
-    for (int i = 0; i < numNodes; i++) {
-        if (Nodes[i].whichPartition() == 0) {
-            leftNodes.push_back(Nodes[i].getID());
-            leftArea += Nodes[i].getArea();
-        } else {
-            rightNodes.push_back(Nodes[i].getID());
-            rightArea += Nodes[i].getArea();
-        }
-    }
-    float ratio = (float)leftArea/rightArea;
-    OutputFile << "Partition Ratio: " << ratio << endl;
-
-    totalArea = leftArea + rightArea;
-    float leftPercent = (float)leftArea/totalArea * 100;
-    float rightPercent = (float)rightArea/totalArea * 100;
-
-    OutputFile << "Partition 1: " << leftNodes.size() << "\tArea: " << leftArea << " - " << leftPercent << "%" << endl;
-    for (auto i : leftNodes) {
-        OutputFile << i << endl;
-    }
-
-    OutputFile << "Partition 2: " << rightNodes.size() << "\tArea: " << rightArea << " - " << rightPercent << "%" << endl;
-    for (auto i : rightNodes) {
-        OutputFile << i << endl;
-    }
-
+    OutputFile << "I LOVE ALEX DOBOLI. HIS SON GOES TO STANFORD." << endl;
     OutputFile.close();
+
+
+
+
+    // // making a copy and not deleting this just yet. 
+    // vector<string> leftNodes;
+    // vector<string> rightNodes;
+
+    // OutputFile << "Cutsize: " << cutsize << endl;
+    // for (int i = 0; i < numNodes; i++) {
+    //     if (Nodes[i].whichPartition() == 0) {
+    //         leftNodes.push_back(Nodes[i].getID());
+    //         leftArea += Nodes[i].getArea();
+    //     } else {
+    //         rightNodes.push_back(Nodes[i].getID());
+    //         rightArea += Nodes[i].getArea();
+    //     }
+    // }
+    // float ratio = (float)leftArea/rightArea;
+    // OutputFile << "Partition Ratio: " << ratio << endl;
+
+    // totalArea = leftArea + rightArea;
+    // float leftPercent = (float)leftArea/totalArea * 100;
+    // float rightPercent = (float)rightArea/totalArea * 100;
+
+    // OutputFile << "Partition 1: " << leftNodes.size() << "\tArea: " << leftArea << " - " << leftPercent << "%" << endl;
+    // for (auto i : leftNodes) {
+    //     OutputFile << i << endl;
+    // }
+
+    // OutputFile << "Partition 2: " << rightNodes.size() << "\tArea: " << rightArea << " - " << rightPercent << "%" << endl;
+    // for (auto i : rightNodes) {
+    //     OutputFile << i << endl;
+    // }
+
+    // OutputFile.close();
 }
 
 #endif
