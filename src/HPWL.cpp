@@ -36,7 +36,8 @@ int totalWirelength(vector<Node>& nodes, vector<Net>& nets) {
 
     for (Net net : nets) {
         for (int nodeIndex : net.getConnectedNodes()) {
-            totalWirelength += abs(nodes[0].getX() - nodes[nodeIndex].getX() )+abs(nodes[0].getY() - nodes[nodeIndex].getY());
+            if (nodeIndex > nodes.size()-1) continue; // Basic bounds check
+            totalWirelength += abs(nodes[nodeIndex].getX() - nodes[nodeIndex+1].getX() )+abs(nodes[nodeIndex].getY() - nodes[nodeIndex+1].getY());
         }
     }
     return totalWirelength;

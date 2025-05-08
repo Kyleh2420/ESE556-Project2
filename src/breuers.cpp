@@ -27,12 +27,7 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     }
     if(Nodes->size() == 0) { return; } // No nodes to partition.
     
-    bool cutDir = currentNode->getCutDirection();
-    float ratio = 0.0;
-    if (ratio == maxWidth)
-        cutDir = 1; // Flip cut direction if ratio is maxWidth
-
-    int lastCut = FM(*Nodes, *Nets, numNodes);
+    int lastCut = FM(*Nodes, *Nets, Nodes->size());
 
     int xh,xl,yh,yl;
     int xPartition, yPartition; // the x and y values that the cut goes through  
@@ -63,16 +58,21 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     xh = currentNode -> getXhigh(); 
     xl = currentNode -> getXlow(); 
 
+    bool cutDir = currentNode->getCutDirection();
+    if (xh <= maxWidth)
+        cutDir = 1; // Flip cut direction if ratio is maxWidth
+
+
     if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
         
-        xPartition = round(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl);
+        xPartition = round(((double)(localLeftArea*(xh - xl))/localTotalArea) + xl); 
 
         leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
     }
     else{
         // left is the same as down 
-        yPartition = ceil(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl);
+        yPartition = ceil(((double)localLeftArea * (yh - yl) / localTotalArea) + yl);
 
         leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
@@ -83,6 +83,9 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 
     leftChild -> setParent(currentNode); 
     rightChild -> setParent(currentNode); 
+
+    leftChild -> setCutDirection(cutDir); 
+    rightChild -> setCutDirection(cutDir);
 
     bisection(&leftNodes, Nets, currentNode->getLeftChild());
     bisection(&rightNodes, Nets, currentNode->getRightChild());
