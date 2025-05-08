@@ -96,9 +96,6 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     currentNode -> setLeftChild(leftChild);
     currentNode -> setRightChild(rightChild);
 
-    leftChild -> setParent(currentNode); 
-    rightChild -> setParent(currentNode); 
-
     bool flipDirection = !(currentNode -> getCutDirection()); 
     leftChild -> setCutDirection(flipDirection); 
     rightChild -> setCutDirection(flipDirection);
