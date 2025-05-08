@@ -9,6 +9,7 @@
 #include <cstring>
 #include <tuple>
 
+#include "shared_variables.h"
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
@@ -16,7 +17,6 @@
 // #include "fiducciaMattheyses.cpp"
 #include "fm.cpp"
 #include "fileop.cpp"
-#include "shared_variables.h"
 #include "TreeNode.h"
 
 using namespace std;
@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     // Parse command-line arguments
     parseArguments(argc, argv, benchmark, logLevel, placementAlgo);
     logLevelGlobal = logLevel;
+    cout << placementAlgo << endl;
 
     // string benchmark = "superblue18";
     // cout << "Which benchmark would you like to run? (Blank will run superblue18)" << endl;

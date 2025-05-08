@@ -5,12 +5,12 @@
 #include "Net.h"
 #include "TreeNode.h"
 #include "fm.cpp"
-
+// 
 // int maxWidth = 0;
 // int leftArea = 0;
 // int rightArea = 0;
 // int totalArea = 0;
-
+// 
 /* 
     naming convention for cut partitioning:
     0 = left / down
