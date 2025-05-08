@@ -20,18 +20,18 @@ private:
     bool cutDirection;
 
 public:
-    TreeNode(){
+    TreeNode(TreeNode *root, int x_high, int x_low, int y_high, int y_low){
         rightChild_ = nullptr; 
         leftChild_ = nullptr; 
-        Parent_ = nullptr; 
+        Parent_ = root; 
         NodeId = ""; 
         width_ = -1; 
         height_ = -1;
-        xhigh = -1; 
-        xlow = -1; 
-        yhigh = -1; 
-        ylow = -1; 
-        cutDirection = 0; 
+        xhigh = x_high; 
+        xlow = x_low; 
+        yhigh = y_high; 
+        ylow = y_low; 
+        cutDirection = 0; // if cut direction is 0 then vertical(x high x low change) if 1 then horizontal cut(y high y low change). 
 
     };
     ~TreeNode();
