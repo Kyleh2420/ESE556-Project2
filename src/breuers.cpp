@@ -82,7 +82,8 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){  // root node should be made and sent to this function. 
     cout << "Node.size: " << Nodes->size() << endl;
     if(Nodes->size()== 1){// Only one node remaining so we're at the leaf. 
-        currentNode -> setNodeId((*Nodes)[0].getID()); 
+        currentNode -> setNodeId((*Nodes)[0].getID());
+        (*Nodes)[0].setCoordinates(currentNode -> getXlow(), currentNode -> getYlow());
         currentNode->setLeftChild(nullptr);
         currentNode->setRightChild(nullptr);
         return; // you can't partition anymore. 
@@ -139,9 +140,9 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
         // cout << "test2.4x" << endl;
         cout << "leftArea: " << localLeftArea << endl;
         cout << "totalArea: " << localTotalArea << endl;
-        cout << "DA MATH: " << (((float)(localLeftArea*(xh - xl))/localTotalArea) + xl) << endl;
-        cout << "TYPE OF DA MATH: "<<typeid(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl).name() << endl;
-        xPartition = round(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl); 
+        cout << "DA MATH: " << (((double)(localLeftArea*(xh - xl))/localTotalArea) + xl) << endl;
+        cout << "TYPE OF DA MATH: "<<typeid(((double)(localLeftArea*(xh - xl))/localTotalArea) + xl).name() << endl;
+        xPartition = round(((double)(localLeftArea*(xh - xl))/localTotalArea) + xl); 
         cout << "xPartition:" << xPartition << endl;
         // cout << "test2.5x" << endl;
 
@@ -153,9 +154,13 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
         // cout << "test2.4y" << endl;
         cout << "leftArea: " << localLeftArea << endl;
         cout << "totalArea: " << localTotalArea << endl;
-        cout << "DA MATH: " << (((float)(localLeftArea*(yh - yl))/localTotalArea) + yl) << endl;
-        cout << "TYPE OF DA MATH: "<<typeid(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl).name() << endl;
-        yPartition = ceil(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl);
+        cout << "DA MATH: " << endl;
+        cout << yh - yl << endl;
+        cout << (double)localLeftArea * (yh - yl) << endl;
+        cout << ((double)localLeftArea * (yh - yl)/localTotalArea) << endl;
+        cout << (((double)localLeftArea * (yh - yl) / localTotalArea) + yl) << endl;
+        cout << "TYPE OF DA MATH: "<<typeid(((double)localLeftArea * (yh - yl) / localTotalArea) + yl).name() << endl;
+        yPartition = ceil(((double)localLeftArea * (yh - yl) / localTotalArea) + yl);
         cout << "yPartition:" << yPartition << endl;
         // cout << "test2.5y" << endl; 
 

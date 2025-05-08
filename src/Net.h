@@ -25,7 +25,10 @@ public:
     void updateDistribution(std::vector<Node>& all_nodes) {
         distribution.first = 0;
         distribution.second = 0;
+        cout << "Net " << netName_ << " distribution: ";
+        cout << "count in partition 0: " << distribution.first << " count in partition 1: " << distribution.second << endl;
         for (int node_idx : connectedNodes_) {
+            // cout << " updating " <<all_nodes[node_idx].getID() << endl;
             if (all_nodes[node_idx].isTerminal()) continue; // Or handle terminals based on specific rules
             if (all_nodes[node_idx].whichPartition() == 0) {
                 distribution.first++;

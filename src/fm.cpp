@@ -132,10 +132,11 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
            int global_num_nodes 
           ) {
 
+    // cout << "FM pass started" << std::endl;
     float total_node_area = 0;
     int num_free_cells = 0;
     for(int i = 0; i < global_num_nodes; ++i) {
-        if (i >= all_nodes.size()) break; // Basic bounds check
+        if (i >= all_nodes.size()) continue; // Basic bounds check
         if (!all_nodes[i].isTerminal()) {
             total_node_area += all_nodes[i].getArea();
             num_free_cells++;
@@ -159,7 +160,7 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
     
     float current_area_part0 = 0;
     for (int i = 0; i < global_num_nodes; ++i) {
-        if (i >= all_nodes.size()) break;
+        if (i >= all_nodes.size()) continue;;
         if (!all_nodes[i].isTerminal()) {
             all_nodes[i].unlockNode(); 
             if (all_nodes[i].whichPartition() == 0) { 
@@ -168,7 +169,9 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
         }
     }
 
+    // cout << "ding din"<< endl;
     for (Net& net : all_nets) {
+        // cout << "huh wha"<<endl;
         net.updateDistribution(all_nodes);
     }
 
@@ -179,9 +182,10 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
             current_cutsize++;
         }
     }
+    //cout << "ding din2"<< endl;
 
     for (int i = 0; i < global_num_nodes; ++i) {
-        if (i >= all_nodes.size()) break;
+        if (i >= all_nodes.size()) continue;;
         Node& node_c = all_nodes[i];
         if (node_c.isTerminal()) continue;
 
@@ -205,6 +209,7 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
             addToGainList(right_bucket_list, node_c.getGain(), i);
         }
     }
+    // cout << "HELP ME" << endl;
     
     std::vector<timePoint> timeline;
     int min_cutsize_this_pass = current_cutsize;
@@ -490,14 +495,16 @@ int fmpass(std::vector<Node>& all_nodes, std::vector<Net>& all_nets,
 
 int FM(vector<Node>& all_nodes, vector<Net>& all_nets,
         int global_num_nodes,float balance_factor_lower_bound = 0.5f, float balance_factor_upper_bound = 0.5f) {
-
+        
+    // cout << "fuck" << endl;
     //Randomly assign partitions
-    for (int i = 0; i < all_nodes.size()/2; i++) {
+    for (int i = 0; i < global_num_nodes/2; i++) {
         // int random = rand() % 2;
         all_nodes[i].setPartition(0);
     }
 
-    for (int i = all_nodes.size()/2; i < all_nodes.size(); i++) {
+    // cout << "nut" << endl;
+    for (int i = global_num_nodes/2; i < global_num_nodes; i++) {
         // int random = rand() % 2;
         all_nodes[i].setPartition(1);
     }
