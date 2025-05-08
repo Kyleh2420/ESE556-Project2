@@ -20,22 +20,22 @@
 using namespace std;
 
 // Global variables
-int numNodes = -1;
-int numTerm = -1;
-int numNets = -1;
-int offset = 0;
-int logLevelGlobal = 0;
-int numRows = -1;
-int numSites = -1;
-int maxWidth = 0;
-int leftArea = 0;
-int rightArea = 0;
-int totalArea = 0;
-
+numNodes = -1;
+numTerm = -1;
+numNets = -1;
+offset = 0;
+logLevelGlobal = 0;
+numRows = -1;
+numSites = -1;
+maxWidth = 0;
+leftArea = 0;
+rightArea = 0;
+totalArea = 0;
 // Function to parse command-line arguments
-void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel, int & placementAlgo) {
-    if (argc < 3) {
-        cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
+void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel, int &placementAlgo) {
+    if (argc < 5) {
+        cerr << "Usage: " << argv[0] << " -log X -input Test -placement [1]" << endl;
+        cerr << "Placement Algorithms\n\t1: Quadrature\n\t2: Bisection\n\t3: Slice Bisection\n\t4: Cut Oriented" << endl;
         // cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
         exit(EXIT_FAILURE);
     }

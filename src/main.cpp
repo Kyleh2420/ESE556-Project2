@@ -29,8 +29,9 @@ int main(int argc, char *argv[]) {
     string benchmark;
     int logLevel;
     string input;
+    int placementAlgo;
     // Parse command-line arguments
-    parseArguments(argc, argv, benchmark, logLevel);
+    parseArguments(argc, argv, benchmark, logLevel, placementAlgo);
     logLevelGlobal = logLevel;
 
     // string benchmark = "superblue18";
