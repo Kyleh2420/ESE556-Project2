@@ -27,7 +27,7 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     bool cutDir = currentNode->getCutDirection();
     float ratio = 0.0;
     if (ratio == maxWidth)
-        cutDir = !cutDir; // Flip cut direction if ratio is maxWidth
+        cutDir = 1; // Flip cut direction if ratio is maxWidth
 
     int lastCut = FM(*Nodes, *Nets, numNodes);
 

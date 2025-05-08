@@ -12,11 +12,12 @@
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
-// #include "breuers.cpp"
+#include "breuers.cpp"
 // #include "fiducciaMattheyses.cpp"
 #include "fm.cpp"
 #include "fileop.cpp"
 #include "shared_variables.h"
+#include "TreeNode.h"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]) {
     */
     string benchmark;
     int logLevel;
+    string input;
     // Parse command-line arguments
     parseArguments(argc, argv, benchmark, logLevel);
     logLevelGlobal = logLevel;
@@ -103,9 +105,13 @@ int main(int argc, char *argv[]) {
     //Execute FM
     // int lastCut = FM(&Nodes, &Nets);
     int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
-    
-
     writeOutput(ofilepath,final_cutsize,Nodes);
+
+    TreeNode *currentNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
+    if (input == "quadrature")
+        quadrature(&Nodes, &Nets, currentNode); // Call quadrature with nullptr for the currentNode
+    else if (input == "bisection")
+        bisection(&Nodes, &Nets, currentNode); // Call bisection with nullptr for the currentNode
     return 0;   
 }
 
