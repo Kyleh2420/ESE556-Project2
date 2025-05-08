@@ -1,3 +1,6 @@
+#ifndef FM_H
+#define FM_H
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -560,3 +563,5 @@ int main() {
     return 0;
 }
 */
+
+#endif 

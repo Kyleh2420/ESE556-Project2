@@ -1,3 +1,6 @@
+#ifndef FILEOP
+#define FILEOP
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -8,10 +11,11 @@
 #include <limits.h>
 #include <cstring>
 
+#include "shared_variables.h"
 #include "Node.h"
 #include "Net.h"
 #include "LinkedList.h"
-#include "shared_variables.h"
+
 
 using namespace std;
 
@@ -268,3 +272,5 @@ void writeOutput(string filename, int cutsize, vector<Node> Nodes) {
 
     OutputFile.close();
 }
+
+#endif
