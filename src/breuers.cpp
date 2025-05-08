@@ -37,6 +37,8 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
     vector<Node> leftNodes;
     vector<Node> rightNodes;
 
+    TreeNode* leftChild;
+    TreeNode* rightChild;
     for (int i = 0; i < (*Nodes).size(); i++) {
         if((*Nodes)[i].whichPartition() == 1)
             rightNodes.push_back((*Nodes)[i]);
@@ -44,21 +46,31 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
             leftNodes.push_back((*Nodes)[i]);
     }
 
+    yh = currentNode -> getYhigh(); 
+    yl = currentNode -> getYlow(); 
+    xh = currentNode -> getXhigh(); 
+    xl = currentNode -> getXlow(); 
+
     if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
         
         xPartition = ((float)(leftArea/totalArea) *(xh - xl)) + xl; 
 
-        TreeNode* leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
-        TreeNode* rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
+        leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
+        rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
     }
     else{
         // left is the same as down 
         yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
 
-        TreeNode* leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
-        TreeNode* rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
+        leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
+        rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
     }
 
+    currentNode -> setLeftChild(leftChild);
+    currentNode -> setRightChild(rightChild);
+
+    leftChild -> setParent(currentNode); 
+    rightChild -> setParent(currentNode); 
 
     bisection(&leftNodes, Nets, currentNode->getLeftChild());
     bisection(&rightNodes, Nets, currentNode->getRightChild());
@@ -95,19 +107,22 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     xh = currentNode -> getXhigh(); 
     xl = currentNode -> getXlow(); 
 
+    TreeNode* leftChild;
+    TreeNode* rightChild;
+
     if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
         
         xPartition = ((float)(leftArea/totalArea) *(xh - xl)) + xl; 
 
-        TreeNode* leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
-        TreeNode* rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
+        leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
+        rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
     }
     else{
         // left is the same as down 
         yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
 
-        TreeNode* leftChi = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
-        TreeNode* rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
+        leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
+        rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
     }
 
     currentNode -> setLeftChild(leftChild);
