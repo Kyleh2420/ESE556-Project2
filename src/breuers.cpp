@@ -294,6 +294,145 @@ void slice(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode, int K)
     slice(&remNodes, Nets, remChild, K);
 }
 
-void cutOriented(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
+void cutOrientedPlacement(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
+    cout << "Node.size: " << Nodes->size() << endl;
     
+    // Base case: only one node remaining (leaf node)
+    if (Nodes->size() == 1) {
+        currentNode->setNodeId((*Nodes)[0].getID());
+        (*Nodes)[0].setCoordinates(currentNode->getXlow(), currentNode->getYlow());
+        currentNode->setLeftChild(nullptr);
+        currentNode->setRightChild(nullptr);
+        return;
+    }
+    
+    // If no nodes, return
+    if (Nodes->size() == 0) {
+        return;
+    }
+    
+    // Retrieve current node boundaries
+    int xh = currentNode->getXhigh();
+    int xl = currentNode->getXlow();
+    int yh = currentNode->getYhigh();
+    int yl = currentNode->getYlow();
+    
+    cout << "xh, xl, yh, yl: " << xh << " " << xl << " " << yh << " " << yl << endl;
+    
+    // Determine best cut direction based on aspect ratio
+    int width = xh - xl;
+    int height = yh - yl;
+    bool horizontalCut = (width > height);  // Cut horizontally if wider than tall
+    
+    // Run FM to get cutsize for both directions and choose the better one
+    int cutSizeHorizontal = 0;
+    int cutSizeVertical = 0;
+    
+    // Store original partition assignments
+    vector<int> originalPartitions;
+    for (int i = 0; i < Nodes->size(); i++) {
+        originalPartitions.push_back((*Nodes)[i].whichPartition());
+    }
+    
+    // Try horizontal cut first
+    currentNode->setCutDirection(0);  // 0 = horizontal cut
+    cutSizeHorizontal = FM(*Nodes, *Nets, Nodes->size());
+    
+    // Save horizontal partitioning
+    vector<Node> horizontalLeftNodes;
+    vector<Node> horizontalRightNodes;
+    int horizontalLeftArea = 0;
+    int horizontalRightArea = 0;
+    
+    for (int i = 0; i < Nodes->size(); i++) {
+        if ((*Nodes)[i].whichPartition() == 1) {
+            horizontalRightNodes.push_back((*Nodes)[i]);
+            horizontalRightArea += (*Nodes)[i].getArea();
+        } else {
+            horizontalLeftNodes.push_back((*Nodes)[i]);
+            horizontalLeftArea += (*Nodes)[i].getArea();
+        }
+    }
+    
+    // Reset partition assignments for vertical cut attempt
+    for (int i = 0; i < Nodes->size(); i++) {
+        (*Nodes)[i].setPartition(originalPartitions[i]);
+    }
+    
+    // Try vertical cut
+    currentNode->setCutDirection(1);  // 1 = vertical cut
+    cutSizeVertical = FM(*Nodes, *Nets, Nodes->size());
+    
+    // Save vertical partitioning
+    vector<Node> verticalLeftNodes;
+    vector<Node> verticalRightNodes;
+    int verticalLeftArea = 0;
+    int verticalRightArea = 0;
+    
+    for (int i = 0; i < Nodes->size(); i++) {
+        if ((*Nodes)[i].whichPartition() == 1) {
+            verticalRightNodes.push_back((*Nodes)[i]);
+            verticalRightArea += (*Nodes)[i].getArea();
+        } else {
+            verticalLeftNodes.push_back((*Nodes)[i]);
+            verticalLeftArea += (*Nodes)[i].getArea();
+        }
+    }
+    
+    // Choose best cut direction based on cutsize
+    vector<Node>* leftNodes;
+    vector<Node>* rightNodes;
+    int leftArea, rightArea, totalArea;
+    int cutDirection;
+    
+    if (cutSizeHorizontal <= cutSizeVertical) {
+        // Horizontal cut is better or equal
+        cutDirection = 0;
+        leftNodes = new vector<Node>(horizontalLeftNodes);
+        rightNodes = new vector<Node>(horizontalRightNodes);
+        leftArea = horizontalLeftArea;
+        rightArea = horizontalRightArea;
+    } else {
+        // Vertical cut is better
+        cutDirection = 1;
+        leftNodes = new vector<Node>(verticalLeftNodes);
+        rightNodes = new vector<Node>(verticalRightNodes);
+        leftArea = verticalLeftArea;
+        rightArea = verticalRightArea;
+    }
+    
+    totalArea = leftArea + rightArea;
+    currentNode->setCutDirection(cutDirection);
+    
+    // Calculate partition point based on chosen cut direction
+    TreeNode* leftChild;
+    TreeNode* rightChild;
+    
+    if (cutDirection == 0) {  // Horizontal cut
+        int xPartition = round(((double)(leftArea * (xh - xl)) / totalArea) + xl);
+        cout << "Horizontal cut at xPartition: " << xPartition << endl;
+        
+        leftChild = new TreeNode(currentNode, xPartition, xl, yh, yl);
+        rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);
+    } else {  // Vertical cut
+        int yPartition = round(((double)(leftArea * (yh - yl)) / totalArea) + yl);
+        cout << "Vertical cut at yPartition: " << yPartition << endl;
+        
+        leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl);
+        rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition);
+    }
+    
+    // Set up tree connections
+    currentNode->setLeftChild(leftChild);
+    currentNode->setRightChild(rightChild);
+    leftChild->setParent(currentNode);
+    rightChild->setParent(currentNode);
+    
+    // Recursively place nodes in children
+    cutOrientedPlacement(leftNodes, Nets, leftChild);
+    cutOrientedPlacement(rightNodes, Nets, rightChild);
+    
+    // Clean up allocated vectors
+    delete leftNodes;
+    delete rightNodes;
 }
