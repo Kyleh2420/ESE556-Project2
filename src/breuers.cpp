@@ -30,6 +30,10 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
         cutDir = !cutDir; // Flip cut direction if ratio is maxWidth
 
     int lastCut = FM(*Nodes, *Nets, numNodes);
+
+    int xh,xl,yh,yl;
+    int xPartition, yPartition; // the x and y values that the cut goes through  
+    int lastCut = FM(*Nodes, *Nets, numNodes); // this is the cutsize.
     vector<Node> leftNodes;
     vector<Node> rightNodes;
 
@@ -40,8 +44,21 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
             leftNodes.push_back((*Nodes)[i]);
     }
 
-    TreeNode* leftChild = new TreeNode();
-    TreeNode* rightChild = new TreeNode();
+    if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
+        
+        xPartition = ((float)(leftArea/totalArea) *(xh - xl)) + xl; 
+
+        TreeNode* leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
+        TreeNode* rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
+    }
+    else{
+        // left is the same as down 
+        yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
+
+        TreeNode* leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
+        TreeNode* rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
+    }
+
 
     bisection(&leftNodes, Nets, currentNode->getLeftChild());
     bisection(&rightNodes, Nets, currentNode->getRightChild());
@@ -89,12 +106,15 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
         // left is the same as down 
         yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
 
-        TreeNode* leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
+        TreeNode* leftChi = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
         TreeNode* rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
     }
 
     currentNode -> setLeftChild(leftChild);
     currentNode -> setRightChild(rightChild);
+
+    leftChild -> setParent(currentNode); 
+    rightChild -> setParent(currentNode); 
 
     bool flipDirection = !(currentNode -> getCutDirection()); 
     leftChild -> setCutDirection(flipDirection); 
