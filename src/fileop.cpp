@@ -23,6 +23,10 @@ int offset = 0;
 int logLevelGlobal = 0;
 int numRows = -1;
 int numSites = -1;
+int maxWidth = 0;
+int leftArea = 0;
+int rightArea = 0;
+int totalArea = 0;
 
 // Function to parse command-line arguments
 void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
@@ -90,6 +94,9 @@ vector<Node> parseNodes(string filename) {
         int height;
         bool terminal = false;
         iss >> nodeID >> width >> height;
+        if (width > maxWidth) {
+            maxWidth = width;
+        }
         if(nodeID.find("p") != string::npos&&flag == 0) {
             flag = 1;
             offset = Nodes.size();
@@ -231,8 +238,6 @@ void writeOutput(string filename, int cutsize, vector<Node> Nodes) {
     // making a copy and not deleting this just yet. 
     vector<string> leftNodes;
     vector<string> rightNodes;
-    int leftArea = 0;
-    int rightArea = 0;
 
     OutputFile << "Cutsize: " << cutsize << endl;
     for (int i = 0; i < numNodes; i++) {
@@ -247,7 +252,7 @@ void writeOutput(string filename, int cutsize, vector<Node> Nodes) {
     float ratio = (float)leftArea/rightArea;
     OutputFile << "Partition Ratio: " << ratio << endl;
 
-    int totalArea = leftArea + rightArea;
+    totalArea = leftArea + rightArea;
     float leftPercent = (float)leftArea/totalArea * 100;
     float rightPercent = (float)rightArea/totalArea * 100;
 
