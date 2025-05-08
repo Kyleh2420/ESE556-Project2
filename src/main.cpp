@@ -91,24 +91,17 @@ int main(int argc, char *argv[]) {
     //Randomly assign all nodes a status of either left or right
     srand(time(0));
 
-    //Randomly assign partitions
-    for (int i = 0; i < Nodes.size(); i++) {
-        int random = rand() % 2;
-        Nodes[i].setPartition(random);
-    }
+    // //Randomly assign partitions
+    // for (int i = 0; i < Nodes.size(); i++) {
+    //     int random = rand() % 2;
+    //     Nodes[i].setPartition(random);
+    // }
 
     int numNodes = Nodes.size(); // Set this appropriately
 
 
     float balance_low = 0.5f; 
-    float balance_high = 0.5f; 
-    
-    //Execute FM
-    // int lastCut = FM(&Nodes, &Nets);
-    //int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
-    //writeOutput(ofilepath,final_cutsize,Nodes);
-    cout << "FM done" << endl;
-    
+    float balance_high = 0.5f;
     TreeNode *rootNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
     if (placementAlgo == 1)
         quadrature(&Nodes, &Nets, rootNode); // Call quadrature with nullptr as the parent for the rootNode
@@ -123,7 +116,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    writeOutput(ofilepath,rootNode);
+    clearOutputFile(ofilepath);
+    writeOutputPreOrder(ofilepath,rootNode);
 
     return 0;   
 }

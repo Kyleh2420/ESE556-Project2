@@ -24,7 +24,7 @@ public:
         rightChild_ = nullptr; 
         leftChild_ = nullptr; 
         Parent_ = root; 
-        NodeId = ""; 
+        NodeId = "node"; 
         width_ = -1; 
         height_ = -1;
         xhigh = x_high; 

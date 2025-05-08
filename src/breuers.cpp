@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 
 #include "shared_variables.h"
 #include "Node.h"
@@ -79,6 +80,7 @@ void bisection(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode) {
 }
 
 void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){  // root node should be made and sent to this function. 
+    cout << "Node.size: " << Nodes->size() << endl;
     if(Nodes->size()== 1){// Only one node remaining so we're at the leaf. 
         currentNode -> setNodeId((*Nodes)[0].getID()); 
         currentNode->setLeftChild(nullptr);
@@ -89,40 +91,73 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     // Still need to add the xhigh, xlow, y high, ylow. These should be set when we set the root node and the we can use the area splits to get 
     // the new values for left and right children depending on the cutdirection of the current node. 
     // Also need to do the height and width thing but I think once we know the bounds for x and y then it should just be yhigh - y low and xhigh - xlow.
-    cout << "test1" << endl;
+    // cout << "test1" << endl;
     int xh,xl,yh,yl;
     int xPartition, yPartition; // the x and y values that the cut goes through  
-    int lastCut = FM(*Nodes, *Nets, numNodes); // this is the cutsize.
+    // cout << "test1.2" << endl;
+    int lastCut = FM(*Nodes, *Nets, Nodes->size()); // this is the cutsize.
+    // cout << "test1.3" << endl;
     vector<Node> leftNodes; 
     vector<Node> rightNodes; 
     
+    // cout << "test1.5" << endl;
+    int localLeftArea = 0;
+    int localRightArea = 0;
+    int localTotalArea = 0;
     for (int i = 0; i < (*Nodes).size(); i++){
         if((*Nodes)[i].whichPartition() == 1){
             rightNodes.push_back((*Nodes)[i]); 
+            localRightArea += (*Nodes)[i].getArea();
         }
         else {
-            leftNodes.push_back((*Nodes)[i]); 
+            leftNodes.push_back((*Nodes)[i]);
+            localLeftArea += (*Nodes)[i].getArea();
         }
+        localTotalArea += (*Nodes)[i].getArea();
     }
-    cout << "test2" << endl;
+
+    // cout << "Left size: " << leftNodes.size() << endl;
+    // cout << "Right size: " << rightNodes.size() << endl;
+
+    // cout << "test2" << endl;
     yh = currentNode -> getYhigh(); 
     yl = currentNode -> getYlow(); 
+    // cout << "bruh" << endl;
     xh = currentNode -> getXhigh(); 
     xl = currentNode -> getXlow(); 
+    // cout << "test2.2" << endl;
 
     TreeNode* leftChild;
     TreeNode* rightChild;
 
+    // cout << "test2.3" << endl;
+    // cout << "Cut DIR: " << currentNode -> getCutDirection() << endl;
+
+    cout << "xh, xl, yh, yl: " << xh << " " << xl << " " << yh << " " << yl << endl;
+
     if (currentNode -> getCutDirection() == 0) { // x high and x low are going to change for the children. Y high and y low are the same. 
-        
-        xPartition = ((float)(leftArea/totalArea) *(xh - xl)) + xl; 
+        // cout << "test2.4x" << endl;
+        cout << "leftArea: " << localLeftArea << endl;
+        cout << "totalArea: " << localTotalArea << endl;
+        cout << "DA MATH: " << (((float)(localLeftArea*(xh - xl))/localTotalArea) + xl) << endl;
+        cout << "TYPE OF DA MATH: "<<typeid(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl).name() << endl;
+        xPartition = round(((float)(localLeftArea*(xh - xl))/localTotalArea) + xl); 
+        cout << "xPartition:" << xPartition << endl;
+        // cout << "test2.5x" << endl;
 
         leftChild = new TreeNode( currentNode, xPartition, xl, yh, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xPartition, yh, yl);  
     }
     else{
         // left is the same as down 
-        yPartition = ((float)(leftArea/totalArea) *(yh - yl)) + yl; 
+        // cout << "test2.4y" << endl;
+        cout << "leftArea: " << localLeftArea << endl;
+        cout << "totalArea: " << localTotalArea << endl;
+        cout << "DA MATH: " << (((float)(localLeftArea*(yh - yl))/localTotalArea) + yl) << endl;
+        cout << "TYPE OF DA MATH: "<<typeid(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl).name() << endl;
+        yPartition = ceil(((float)(localLeftArea*(yh - yl))/localTotalArea) + yl);
+        cout << "yPartition:" << yPartition << endl;
+        // cout << "test2.5y" << endl; 
 
         leftChild = new TreeNode(currentNode, xh, xl, yPartition, yl); // x and y values are assigned for these. 
         rightChild = new TreeNode(currentNode, xh, xl, yh, yPartition); // left is the same as down and right is the same as up.  
@@ -135,6 +170,7 @@ void quadrature(vector<Node>* Nodes, vector<Net>* Nets, TreeNode* currentNode){ 
     rightChild -> setParent(currentNode); 
 
     bool flipDirection = !(currentNode -> getCutDirection()); 
+    // cout << "test3" << endl;
     leftChild -> setCutDirection(flipDirection); 
     rightChild -> setCutDirection(flipDirection);
     // set the values of the attributes of treenode. 

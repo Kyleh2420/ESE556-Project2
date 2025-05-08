@@ -242,14 +242,46 @@ void parsePL(string filename, vector<Node>* nodes) {
     PLFile.close();
 }
 
-void writeOutput(string filename, TreeNode* root) {
-    ofstream OutputFile(filename);
+void clearOutputFile(string filename) {
+    ofstream OutputFile;
+    OutputFile.open(filename, std::ofstream::trunc);
     if(!OutputFile.is_open()) {
         cerr << filename << " not found" << endl;
         exit(EXIT_FAILURE);
     }
-    OutputFile << "I LOVE ALEX DOBOLI. HIS SON GOES TO STANFORD." << endl;
     OutputFile.close();
+}
+
+void writeOutputPreOrder(string filename, TreeNode* root) {
+    cout << "Looking at node: " << root->getLeafNodeId();
+    if (root->getLeftChild() != nullptr){
+        cout << " Left child: " << root->getLeftChild()->getLeafNodeId();
+    } else {
+        cout << " Left child: nullptr";
+    }
+    if (root->getRightChild() != nullptr){
+        cout << " Right child: " << root->getRightChild()->getLeafNodeId();
+    } else {
+        cout << " Right child: nullptr";
+    }
+    
+    if (root->getLeftChild() == nullptr && root->getRightChild() == nullptr) {
+        ofstream OutputFile;
+        OutputFile.open(filename, std::ofstream::app | std::ofstream::ate);
+        if(!OutputFile.is_open()) {
+            cerr << filename << " not found" << endl;
+            exit(EXIT_FAILURE);
+        }
+        OutputFile << "Node ID: " << root->getLeafNodeId() 
+                   << "\t\tCoords: (" << root->getXlow() << ", "
+                   << root->getYlow() << ")" << endl;
+        OutputFile.close();
+        cout << endl << " Printed leaf node: " << root->getLeafNodeId() << endl;
+        return;
+    }
+    cout << " moving to next nodes" << endl;
+    writeOutputPreOrder(filename,root->getLeftChild());
+    writeOutputPreOrder(filename,root->getRightChild());
 
 
 
