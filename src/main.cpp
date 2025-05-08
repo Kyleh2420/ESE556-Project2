@@ -28,8 +28,7 @@ int main(int argc, char *argv[]) {
     */
     string benchmark;
     int logLevel;
-    string input;
-    int placementAlgo;
+    int placementAlgo = 0;
     // Parse command-line arguments
     parseArguments(argc, argv, benchmark, logLevel, placementAlgo);
     logLevelGlobal = logLevel;
@@ -108,18 +107,19 @@ int main(int argc, char *argv[]) {
     // int lastCut = FM(&Nodes, &Nets);
     //int final_cutsize = FM(Nodes, Nets, numNodes, balance_low, balance_high);
     //writeOutput(ofilepath,final_cutsize,Nodes);
-
+    cout << "FM done" << endl;
+    
     TreeNode *rootNode = new TreeNode(nullptr, numSites, 0, numRows, 0); // Create the root node
-    if (input == "quadrature")
+    if (placementAlgo == 1)
         quadrature(&Nodes, &Nets, rootNode); // Call quadrature with nullptr as the parent for the rootNode
-    else if (input == "bisection")
+    else if (placementAlgo == 2)
         bisection(&Nodes, &Nets, rootNode); // Call bisection with nullptr as the parent for the rootNode
-    else if (input == "slice")
-        slice(&Nodes, &Nets, rootNode); // Call slice with nullptr as the parent for the rootNode
-    else if (input == "cutOriented")
+    else if (placementAlgo == 3)
+        slice(&Nodes, &Nets, rootNode, numSites); // Call slice with nullptr as the parent for the rootNode
+    else if (placementAlgo == 4)
         cout << "I aint doing this shitty fucking placement algo. Shit makes no sense. BUT I LOVE ALEX DOBOLI. HIS SON GOES TO STANFORD." << endl;
     else {
-        cerr << "Invalid input. Please enter 'quadrature', 'bisection', or 'slice'." << endl;
+        cerr << "Invalid input. Please enter '\n\t1: Quadrature\n\t2: Bisection\n\t3: Slice Bisection\n\t4: Cut Oriented" << endl;
         return 1;
     }
 
