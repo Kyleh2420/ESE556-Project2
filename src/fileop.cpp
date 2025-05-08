@@ -33,7 +33,7 @@ int rightArea = 0;
 int totalArea = 0;
 
 // Function to parse command-line arguments
-void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
+void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel, int & placementAlgo) {
     if (argc < 3) {
         cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
         // cerr << "Usage: " << argv[0] << " -log X -input Test" << endl;
@@ -55,6 +55,14 @@ void parseArguments(int argc, char *argv[], string &benchmark, int &logLevel) {
                 i++;
             } else {
                 cerr << "Error: -input option requires an argument." << endl;
+                exit(EXIT_FAILURE);
+            }
+        } else if (strcmp(argv[i], "-placement") == 0) {
+            if (i + 1 < argc) {
+                placementAlgo = atoi(argv[i + 1]);
+                i++;
+            } else {
+                cerr << "Error: -log option requires an argument." << endl;
                 exit(EXIT_FAILURE);
             }
         } else {
